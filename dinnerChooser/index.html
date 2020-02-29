@@ -1,0 +1,459 @@
+<html>
+
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #222222;
+            color: #cccccc;
+            padding: 0px;
+            margin: 0 auto;
+            max-width: 1028px;
+            font-family: 微軟正黑體;
+        }
+
+        .item {
+            float: left;
+            width: 320px;
+            height: 172px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #cccccc;
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        @media screen and (max-width:450px) {
+            .item {
+                float: left;
+                width: 93%;
+                height: 172px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #cccccc;
+                border-radius: 10px;
+                margin: 10px;
+            }
+        }
+
+        .itemContent {
+            list-style-type: none;
+            padding: 8px;
+            margin: 5px;
+        }
+
+        .filterItem {
+            width: 95px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        a {
+            color: #cccccc;
+            word-break: break-all;
+        }
+
+        li {
+            margin: 5px 0px;
+        }
+
+        #tagFilter,
+        #priceFilter,
+        #typeFilter,
+        #distanceFilter,
+        #otherFilter {
+            border-bottom: #cccccc;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+        }
+
+        input[type=button] {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5 2;
+            background-color: #AAEEAA;
+            border-color: #AAEEAA;
+            border-style: solid;
+        }
+
+        input[type=checkbox] {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tagFilter">
+        <div id="priceFilter"></div>
+        <div id="typeFilter"></div>
+        <div id="distanceFilter"></div>
+        <div id="otherFilter"></div>
+    </div>
+    <input id="seeAll" type="button" value="看全部" onclick="renderShop(data)">｜
+    <input id="seeFilter" type="button" value="根據過濾條件看店家" onclick="renderFilteredShop(false)">
+    <input id="submit" type="button" value="按我按我隨機選" onclick="randomSelect(false)">｜
+    <input id="seeFilter" type="button" value="我不要這類店家，讓我看有哪些店家" onclick="renderFilteredShop(true)">
+    <input id="submitFilter" type="button" value="我不要這類店家，隨機幫我選" onclick="randomSelect(true)">｜
+    <input id="cleanFilter" type="button" value="清除過濾條件" onclick="cleanFilter()">
+    <div id="result"></div>
+    <script type="text/javascript">
+        var data = [{
+            name: "喬記",
+            mapURL: "https://goo.gl/maps/wi1sqxL3ZVN2",
+            tags: ["中式", "麵", "水餃", "小菜", "低價", "近"],
+            rest: [1]
+        }, {
+            name: "西貢",
+            mapURL: "https://goo.gl/maps/ymZp37ZKEcR2",
+            tags: ["越式", "飯", "河粉", "低價", "近"],
+            rest: []
+        }, {
+            name: "南投意麵",
+            mapURL: "https://goo.gl/maps/Q92AXNF63BL2",
+            tags: ["中式", "麵", "小菜", "低價", "近"],
+            rest: [6, 0]
+        }, {
+            name: "SUBWAY",
+            mapURL: "https://goo.gl/maps/bM55c7wdNN52",
+            tags: ["美式", "潛艇堡", "中低價", "近"],
+            rest: []
+        }, {
+            name: "白菜小姐",
+            mapURL: "https://goo.gl/maps/xSTsQWo3Za72",
+            tags: ["義式", "義大利麵", "pizza", "燉飯", "中價", "近"],
+            rest: []
+        }, {
+            name: "新禚家",
+            mapURL: "https://goo.gl/maps/wVWJDJqmwao",
+            tags: ["中式", "麵", "水餃", "近"],
+            rest: []
+        }, {
+            name: "大為臭臭鍋",
+            mapURL: "https://goo.gl/maps/EaEPbmP3cuB2",
+            tags: ["中式", "小火鍋", "低價", "近"],
+            rest: []
+        }, {
+            name: "江南傳奇鍋",
+            mapURL: "https://goo.gl/maps/YbVGNxHpkZ42",
+            tags: ["中式", "小火鍋", "中低價", "近"],
+            rest: []
+        }, {
+            name: "樂翻天火鍋",
+            mapURL: "https://goo.gl/maps/Mwo9WfUcrZo",
+            tags: ["中式", "小火鍋", "中價", "近"],
+            rest: []
+        }, {
+            name: "鍋博士",
+            mapURL: "https://goo.gl/maps/PgdWXHjXpxm",
+            tags: ["中式", "小火鍋", "低價", "近"],
+            rest: []
+        }, {
+            name: "林記麻辣鴨血",
+            mapURL: "https://goo.gl/maps/jqQFpbWbNzr",
+            tags: ["中式", "鹽水雞", "麵", "低價", "近"],
+            rest: [6, 0]
+        }, {
+            name: "尚品池上飯包",
+            mapURL: "https://goo.gl/maps/LaMZfH3yuBy",
+            tags: ["中式", "飯", "便當", "低價", "近"],
+            rest: [0]
+        }, {
+            name: "豐禾便當",
+            mapURL: "https://goo.gl/maps/2cs6TLR6CTy",
+            tags: ["中式", "飯", "便當", "低價", "近"],
+            rest: []
+        }, {
+            name: "八方雲集-江南",
+            mapURL: "https://goo.gl/maps/DnZyx7H2eGM2",
+            tags: ["中式", "麵", "水餃", "低價", "近"],
+            rest: [6]
+        }, {
+            name: "周董便當",
+            mapURL: "https://goo.gl/maps/PDsrW8QzmX72",
+            tags: ["中式", "飯", "便當", "低價", "近"],
+            rest: [6, 0]
+        }, {
+            name: "全國健康素食",
+            mapURL: "https://goo.gl/maps/iP5dqkP5eF82",
+            tags: ["中式", "飯", "便當", "自助餐", "低價", "近"],
+            rest: [6, 0]
+        }, {
+            name: "韓善宮",
+            mapURL: "https://goo.gl/maps/uKbWUoL4S432",
+            tags: ["韓式", "中價", "近"],
+            rest: []
+        }, {
+            name: "弁当 多治見",
+            mapURL: "https://goo.gl/maps/qyY8hkb2LaS2",
+            tags: ["日式", "飯", "中價", "近"],
+            rest: [6, 0]
+        }, {
+            name: "737海苔飯捲",
+            mapURL: "https://goo.gl/maps/a5RJouxmGvG2",
+            tags: ["中式", "飯捲", "低價", "近"],
+            rest: [0]
+        }, {
+            name: "御品園鮮肉湯包",
+            mapURL: "https://goo.gl/maps/QbsFpeQmgk62",
+            tags: ["中式", "湯包", "水餃", "中低價", "近"],
+            rest: [2]
+        }, {
+            name: "人从众",
+            mapURL: "",
+            tags: ["西式", "排餐", "鐵板麵", "中價", "近"],
+            rest: []
+        }, {
+            name: "手勁麵",
+            mapURL: "https://goo.gl/maps/P2J1vz6yGmD2",
+            tags: ["中式", "麵", "水餃", "中低價", "近"],
+            rest: [1, 2]
+        }, {
+            name: "莫宰羊",
+            mapURL: "https://goo.gl/maps/ZFbFuGsNcuG2",
+            tags: ["中式", "近"],
+            rest: []
+        }, {
+            name: "寶神涮涮鍋",
+            mapURL: "https://goo.gl/maps/Tc9fFGo9Zb32",
+            tags: ["中式", "小火鍋", "中價", "近"],
+            rest: []
+        }, {
+            name: "麥當勞",
+            mapURL: "https://goo.gl/maps/tywvV39wUg12",
+            tags: ["美式", "中低價", "近"],
+            rest: []
+        }, {
+            name: "pizzaHut",
+            mapURL: "https://goo.gl/maps/CawjxX3sHEE2",
+            tags: ["美式", "pizza", "中價", "遠"],
+            rest: []
+        }, {
+            name: "拿坡里",
+            mapURL: "https://goo.gl/maps/e2AKM96xca32",
+            tags: ["美式", "pizza", "中價", "遠"],
+            rest: []
+        }, {
+            name: "貳樓",
+            mapURL: "https://goo.gl/maps/RastD8njFCx",
+            tags: ["西式", "輕食", "排餐", "中高價", "遠"],
+            rest: []
+        }, {
+            name: "覺旅",
+            mapURL: "https://goo.gl/maps/HBFDWkunkbz",
+            tags: ["西式", "輕食", "中高價", "遠"],
+            rest: []
+        }, {
+            name: "大埔鐵板燒",
+            mapURL: "https://goo.gl/maps/tizSQAsvUX92",
+            tags: ["中式", "鐵板燒", "中低價", "遠"],
+            rest: []
+        }, {
+            name: "北一家",
+            mapURL: "https://goo.gl/maps/HA3Cak2CDi42",
+            tags: ["日式", "拉麵", "中價", "近"],
+            rest: []
+        }, {
+            name: "滝禾",
+            mapURL: "",
+            tags: ["日式", "拉麵", "中價", "近"],
+            rest: []
+        }, {
+            name: "小學日燒肉丼",
+            mapURL: "https://goo.gl/maps/YvTYWtHStf72",
+            tags: ["日式", "飯", "遠"],
+            rest: []
+        }, {
+            name: "89餐廳",
+            mapURL: "https://goo.gl/maps/3VhsN56oTmM2",
+            tags: ["義式", "義大利麵", "中價", "近"],
+            rest: [2]
+        }, {
+            name: "林掌櫃拉麵館",
+            mapURL: "https://goo.gl/maps/jpqN6BRtDJS2",
+            tags: ["中式", "麵", "水餃", "低價", "近"],
+            rest: [2]
+        }, {
+            name: "Bonjour 日安",
+            mapURL: "https://goo.gl/maps/BbEmsZvxFVDRxz6D6",
+            tags: ["早餐", "中低價", "近"],
+            rest: []
+        }, {
+            name: "新四海豆漿大王",
+            mapURL: "https://goo.gl/maps/Lxi4DChQ7Eec1XtT9",
+            tags: ["早餐", "中低價", "近"],
+            rest: []
+        }, {
+            name: "哈吉漢堡",
+            mapURL: "https://goo.gl/maps/WghjkUJCFwNvCVsS9",
+            tags: ["早餐", "中低價", "近"],
+            rest: [0]
+        }, {
+            name: "美而美",
+            mapURL: "https://goo.gl/maps/mtR8atNmHVnooxni6",
+            tags: ["早餐", "中低價", "近"],
+            rest: []
+        }, {
+            name: "小辣椒早餐坊",
+            mapURL: "https://goo.gl/maps/LhKJwhNr1QGpktYA6",
+            tags: ["早餐", "中低價", "近"],
+            rest: []
+        }, {
+            name: "名廚燒臘店",
+            mapURL: "https://goo.gl/maps/cmcLs6NEHp72Shtp8",
+            tags: ["中式", "飯","低價", "近"],
+            rest: [0]
+        }, {
+            name: "古早味-麻油腰子麵線",
+            mapURL: "https://goo.gl/maps/jBAnHAQsoxqrqKJy8",
+            tags: ["中式", "飯", "麵","低價", "近"],
+            rest: [1]
+        }
+        ];
+        var emptyShop = {
+            name: "過濾條件沒有店面存在",
+            mapURL: "",
+            tags: [],
+            rest: []
+        }
+
+        var trans = {
+            "name": "店名",
+            "mapURL": "google地圖",
+            "tags": "標籤",
+            "rest": "休息日",
+            "weekday": ["日", "一", "二", "三", "四", "五", "六"]
+        }
+
+        var price = ["低價", "中低價", "中價", "中高價", "高價"];
+        var distance = ["遠", "近"];
+        var restaurantType = ["中式", "西式", "美式", "越式", "韓式", "泰式", "印度", "義式", "日式", "早餐"];
+
+        function renderFilter() {
+            var tagset = new Set();
+            data.forEach(shop => {
+                shop.tags.forEach(tag => tagset.add(tag));
+            });
+            var renderTag = function (tag) {
+                const tagFilterdiv = `
+                    <div class="filterItem">
+                        <input type="checkbox" value="${tag}"><span>${tag}</span>
+                    </div>
+                `;
+                return tagFilterdiv;
+            }
+
+            var priceFilter = document.getElementById("priceFilter");
+            price.forEach(tag => priceFilter.insertAdjacentHTML('beforeend', renderTag(tag)));
+
+            var distanceFilter = document.getElementById("distanceFilter");
+            distance.forEach(tag => distanceFilter.insertAdjacentHTML('beforeend', renderTag(tag)));
+
+            var typeFilter = document.getElementById("typeFilter");
+            restaurantType.forEach(tag => typeFilter.insertAdjacentHTML('beforeend', renderTag(tag)));
+
+            var otherFilter = document.getElementById("otherFilter");
+            tagset.forEach(tag => {
+                if (!(price.includes(tag) || distance.includes(tag) || restaurantType.includes(tag)))
+                    otherFilter.insertAdjacentHTML('beforeend', renderTag(tag));
+            });
+        }
+
+        function renderShop(shoplist) {
+            var result = document.getElementById("result");
+            result.innerHTML = "";
+            shoplist.forEach(shop => {
+                const shopdiv = `
+                    <div class="item">
+                        <ul class="itemContent">
+                            <li>${trans.name}：${shop.name}</li>
+                            <li>${trans.mapURL}：</br><a href="${shop.mapURL}" target="_blank">${shop.mapURL}</a></li>
+                            <li>${trans.tags}：${Array.from(shop.tags).join(", ")}</li>
+                            <li>${trans.rest}：${shop.rest.map(e => trans.weekday[e]).join(", ")}</li>
+                        </ul>
+                    </div>
+                `
+                result.insertAdjacentHTML('beforeend', shopdiv);
+            });
+        }
+
+        function renderFilteredShop(reverse) {
+            var filterSelected = document.querySelectorAll("input[type=checkbox]:checked");
+            if (filterSelected.length == 0) {
+                renderShop(data);
+                return;
+            }
+            var tagSet = new Set();
+            for (var e of filterSelected) {
+                tagSet.add(e.value);
+            }
+            var result = [];
+            for (var shop of data) {
+                var wanted = false || reverse;
+                for (var tag of shop.tags) {
+                    if (tagSet.has(tag)) {
+                        wanted = true && !reverse;
+                        break;
+                    }
+                }
+                if (wanted)
+                    result.push(shop);
+            }
+            renderShop(result);
+        }
+
+        function randomSelect(reverse) {
+            var filterSelected = document.querySelectorAll("input[type=checkbox]:checked");
+            var tagSet = new Set();
+            if (filterSelected.length == 0) {
+                filterSelected = document.querySelectorAll("input[type=checkbox]")
+            }
+            for (var e of filterSelected) {
+                tagSet.add(e.value);
+            }
+            var result = new Set();
+            for (var shop of data) {
+                var wanted = false || reverse;
+                for (var tag of shop.tags) {
+                    if (tagSet.has(tag)) {
+                        if(reverse)
+                            wanted = wanted && !reverse;
+                        else {
+                            wanted = true;
+                            break;
+                        }
+                    }
+                }
+                if (wanted)
+                    result.add(shop);
+            }
+            var resultShop = null;
+            if (result.size > 1) {
+                var index = Math.floor((Math.random() * 8191 / Math.random() * 31) % result.size);
+                resultShop = Array.from(result)[index];
+            }
+            else if (result.size == 1) {
+                resultShop = Array.from(result)[0];
+            }
+            var currentWeekday = new Date().getDay();
+            if (resultShop != null && resultShop.rest != null && resultShop.rest.includes(currentWeekday) && result.size > 1) {
+                randomSelect()
+            }
+            else if (resultShop == null) {
+                renderShop([emptyShop]);
+            }
+            else
+                renderShop([resultShop]);
+        }
+
+        function cleanFilter() {
+            document.querySelectorAll("input[type=checkbox]").forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+        renderFilter();
+    </script>
+</body>
+
+</html>
