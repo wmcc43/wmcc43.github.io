@@ -168,6 +168,8 @@
             setInterval(showTime, 1000)
         })
         let fullScreenSwitch = function(event){
+            event.stopPropagation();
+            event.preventDefault();
             if(document.fullscreenElement != null)
                 document.exitFullscreen()
             else
