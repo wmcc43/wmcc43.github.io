@@ -142,14 +142,14 @@
         document.addEventListener("DOMContentLoaded", function (event) {
             let showTime = function () {
                 let now = new Date()
-                let hour = now.getHours()
-                let hourDigit1 = Math.floor(hour / 10);
-                let hourDigit2 = hour % 10;
                 let minute = now.getMinutes()
                 if (minute == current_minute)
                     return 0
                 else
                     current_minute = minute
+                let hour = now.getHours()
+                let hourDigit1 = Math.floor(hour / 10);
+                let hourDigit2 = hour % 10;
                 let minuteDigit1 = Math.floor(minute / 10);
                 let minuteDigit2 = minute % 10;
                 let hour1 = document.getElementById("hour1")
