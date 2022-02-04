@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div id="screen" class="container-fluid">
         <div class="row fullheight align-items-center justify-content-center">
             <div class="col-6 hour-border">
                 <div class="row fullheight align-items-center">
@@ -166,6 +166,12 @@
             }
             showTime()
             setInterval(showTime, 1000)
+        })
+        document.addEventListener('click', function(event){
+            if(document.fullscreenElement != null)
+                document.exitFullscreen()
+            else
+                document.body.requestFullscreen()
         })
     </script>
 </body>
