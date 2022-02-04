@@ -167,12 +167,14 @@
             showTime()
             setInterval(showTime, 1000)
         })
-        document.addEventListener('click', function(event){
+        let fullScreenSwitch = function(event){
             if(document.fullscreenElement != null)
                 document.exitFullscreen()
             else
                 document.body.requestFullscreen()
-        })
+        }
+        document.addEventListener("click", fullScreenSwitch)
+        document.addEventListener("touchend", fullScreenSwitch)
     </script>
 </body>
 
