@@ -1,0 +1,168 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: black;
+        }
+
+        .fullheight {
+            height: 100%;
+            padding: 0 0 0 0;
+        }
+
+        .hour-border {
+            border-right-color: #cccccc;
+            border-right-width: 5px;
+            border-right-style: solid;
+        }
+
+        .minute-border {
+            border-left-color: #cccccc;
+            border-left-width: 5px;
+            border-left-style: solid;
+        }
+
+        svg {
+            fill: #cccccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row fullheight align-items-center justify-content-center">
+            <div class="col-6 hour-border">
+                <div class="row fullheight align-items-center">
+                    <div id="hour1" class="col-6 fullheight text-center"></div>
+                    <div id="hour2" class="col-6 fullheight text-center"></div>
+                </div>
+            </div>
+            <div class="col-6 minute-border">
+                <div class="row fullheight align-items-center">
+                    <div id="minute1" class="col-6 fullheight text-center"></div>
+                    <div id="minute2" class="col-6 fullheight text-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        const width = "100%"
+        const height = "100%"
+        const digit_map = {
+            0: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="m 12,1.5 c 1.321,0 2.484,0.348 3.447,0.994 0.963,0.645 1.726,1.588 2.249,2.778 0.522,1.19 0.804,2.625 0.804,4.257 v 4.942 c 0,1.632 -0.282,3.068 -0.804,4.257 -0.523,1.19 -1.286,2.133 -2.25,2.778 C 14.484,22.152 13.321,22.5 12,22.5 10.679,22.5 9.516,22.152 8.553,21.506 7.59,20.861 6.827,19.918 6.304,18.728 5.782,17.538 5.5,16.103 5.5,14.471 V 9.529 C 5.5,7.897 5.782,6.461 6.304,5.272 6.827,4.082 7.59,3.139 8.554,2.494 9.515,1.848 10.678,1.5 12,1.5 Z m 0,2 C 11.084,3.5 10.306,3.726 9.667,4.155 9.03,4.582 8.509,5.225 8.135,6.075 7.723,7.015 7.5,8.183 7.5,9.529 v 4.942 c 0,1.346 0.223,2.514 0.635,3.453 0.374,0.851 0.895,1.494 1.532,1.921 0.639,0.429 1.417,0.655 2.333,0.655 0.916,0 1.694,-0.226 2.333,-0.655 0.637,-0.427 1.158,-1.07 1.532,-1.92 0.412,-0.94 0.635,-2.108 0.635,-3.454 V 9.529 C 16.5,8.183 16.277,7.015 15.865,6.076 15.491,5.225 14.97,4.582 14.333,4.155 13.694,3.726 12.916,3.5 12,3.5 Z" />
+                    </g>
+                </svg>
+                `,
+            1: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 14,1.5 V 22 H 12 V 3.704 L 7.5,4.91 V 2.839 l 5,-1.339 z" />
+                    </g>
+                </svg>
+                `,
+            2: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="m 16,7.5 a 4,4 0 1 0 -8,0 H 6 a 6,6 0 1 1 10.663,3.776 L 9.343,19.999 18,20 v 2 H 6 V 20.873 L 15.064,10.071 A 3.982,3.982 0 0 0 16,7.5 Z" />
+                    </g>
+                </svg>
+                `,
+            3: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 18,2 V 3.362 L 12.809,9.55 a 6.501,6.501 0 1 1 -7.116,8.028 l 1.94,-0.486 A 4.502,4.502 0 0 0 16.5,16 4.5,4.5 0 0 0 9.995,11.97 L 9.767,12.092 9.077,10.885 14.855,4 H 6.5 V 2 Z" />
+                    </g>
+                </svg>
+                `,
+            4: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-3.5)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 16,1.5 V 16 h 3 v 2 h -3 v 4 H 14 V 18 H 4 V 16.898 L 14,1.5 Z M 14,16 V 5.171 L 6.968,16 Z" />
+                    </g>
+                </svg>
+                `,
+            5: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 18,2 V 4 H 9.3 l -0.677,6.445 a 6.5,6.5 0 1 1 -2.93,7.133 l 1.94,-0.486 A 4.502,4.502 0 0 0 16.5,16 4.5,4.5 0 0 0 12,11.5 c -2.022,0 -3.278,0.639 -3.96,1.53 L 6.465,11.848 7.5,2 Z" />
+                    </g>
+                </svg>
+                `,
+            6: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 14.886,2 10.448,9.686 A 6.5,6.5 0 1 1 6.4,12.7 L 12.576,2 Z M 12,11.5 a 4.5,4.5 0 1 0 0,9 4.5,4.5 0 0 0 0,-9 z" />
+                    </g>
+                </svg>
+                `,
+            7: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="M 19,2 V 3.5 L 10.763,22 H 8.574 L 16.587,4 H 6 V 2 Z" />
+                    </g>
+                </svg>
+                `,
+            8: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="m 12,1.5 a 5.5,5.5 0 0 1 3.352,9.86 c 1.888,1.05 3.148,2.96 3.148,5.14 0,3.314 -2.91,6 -6.5,6 -3.59,0 -6.5,-2.686 -6.5,-6 0,-2.181 1.261,-4.09 3.147,-5.141 A 5.5,5.5 0 0 1 12,1.5 Z m 0,11 c -2.52,0 -4.5,1.828 -4.5,4 0,2.172 1.98,4 4.5,4 2.52,0 4.5,-1.828 4.5,-4 0,-2.172 -1.98,-4 -4.5,-4 z m 0,-9 a 3.5,3.5 0 1 0 0,7 3.5,3.5 0 0 0 0,-7 z" />
+                    </g>
+                </svg>
+                `,
+            9: `
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-4)">
+                        <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
+                        <path d="m 12,1.5 a 6.5,6.5 0 0 1 5.619,9.77 L 11.423,21.999 H 9.114 l 4.439,-7.686 A 6.5,6.5 0 1 1 12,1.5 Z m 0,2 a 4.5,4.5 0 1 0 0,9 4.5,4.5 0 0 0 0,-9 z" />
+                    </g>
+                </svg>
+                `
+        }
+        document.addEventListener("DOMContentLoaded", function (event) {
+            let showTime = function () {
+                let now = new Date()
+                let hour = now.getHours()
+                let hourDigit1 = Math.floor(hour / 10);
+                let hourDigit2 = hour % 10;
+                let minute = now.getMinutes()
+                let minuteDigit1 = Math.floor(minute / 10);
+                let minuteDigit2 = minute % 10;
+                let hour1 = document.getElementById("hour1")
+                let hour2 = document.getElementById("hour2")
+                let minute1 = document.getElementById("minute1")
+                let minute2 = document.getElementById("minute2")
+                let elements = [[hour1, hourDigit1], [hour2, hourDigit2], [minute1, minuteDigit1], [minute2, minuteDigit2]]
+                elements.forEach(e => {
+                    dom = e[0]
+                    digit = e[1]
+                    dom.innerHTML = ""
+                    dom.insertAdjacentHTML("beforeend", digit_map[digit])
+                })
+            }
+            showTime()
+            setInterval(showTime, 10000)
+        })
+    </script>
+</body>
+
+</html>
