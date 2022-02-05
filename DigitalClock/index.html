@@ -12,7 +12,6 @@
 
         .fullheight {
             height: 100%;
-            padding: 0 0 0 0;
         }
 
         .hour-border {
@@ -55,7 +54,7 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript">
         const width = "100%"
-        const height = "100%"
+        const height = "80%"
         const digit_map = {
             0: `
                 <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
@@ -90,8 +89,8 @@
                 </svg>
                 `,
             4: `
-                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 16 24" xmlns="http://www.w3.org/2000/svg">
-                    <g transform="translate(-3.5)">
+                <svg width="${width}" height="${height}" preserveAspectRatio="none" viewBox="0 0 18 24" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(-2.5)">
                         <path fill="none" d="M 0,0 H 24 V 24 H 0 Z" />
                         <path d="M 16,1.5 V 16 h 3 v 2 h -3 v 4 H 14 V 18 H 4 V 16.898 L 14,1.5 Z M 14,16 V 5.171 L 6.968,16 Z" />
                     </g>
@@ -167,10 +166,10 @@
             showTime()
             setInterval(showTime, 1000)
         })
-        let fullScreenSwitch = function(event){
+        let fullScreenSwitch = function (event) {
             event.stopPropagation();
             event.preventDefault();
-            if(document.fullscreenElement != null)
+            if (document.fullscreenElement != null)
                 document.exitFullscreen()
             else
                 document.body.requestFullscreen()
